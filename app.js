@@ -65,13 +65,17 @@ variationsStream(alphabet, maxLength)
       console.log("Attempts:", attempts);
     }
     if (currentSignature == signature) {
-      printResult(startTime, attempts, comb);
-      process.exit(0);
+      setInterval(() => {
+        printResult(startTime, attempts, comb);
+      }, 2500);
+      // process.exit(0);
     }
   })
   .on("end", function () {
-    printResult(startTime, attempts);
-    process.exit(1);
+    setInterval(() => {
+      printResult(startTime, attempts);
+    }, 2500);
+    // process.exit(1);
   });
 // -------------------------------------------------------------------------------------------------------- //
 
