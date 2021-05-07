@@ -4,7 +4,7 @@
   "description": "",
   "main": "jwt-cracker.js",
   "scripts": {
-    "start": "pm2 start",
+    "start": "pm2 start jwt-cracker.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tirthpatel5885@gmail.com",
