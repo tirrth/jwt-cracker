@@ -3,12 +3,12 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
-// -------------------------------------------------------------------------------------------------------- //
+var http = require("http");
 const crypto = require("crypto");
 const variationsStream = require("variations-stream");
 const pkg = require("./package.json");
 
+// ------------------------------------------------ jwt-cracker ------------------------------------------------ //
 const defaultAlphabet =
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const defaultMaxLength = 12;
@@ -77,7 +77,35 @@ variationsStream(alphabet, maxLength)
     }, 2500);
     // process.exit(1);
   });
-// -------------------------------------------------------------------------------------------------------- //
+// ------------------------------------------------ (EXIT) jwt-cracker ------------------------------------------------ //
+
+// ----------------------------------------------- keep jwt-cracker alive ----------------------------------------------- //
+function startKeepAlive() {
+  setInterval(function () {
+    var options = {
+      host: "jwt-cracker.herokuapp.com",
+      // port: 80,
+      path: "/",
+    };
+
+    http
+      .get(options, function (res) {
+        res.on("data", function (chunk) {
+          try {
+            // optional logging... disable after it's working
+            console.log("HEROKU RESPONSE: " + chunk);
+          } catch (err) {
+            console.log(err.message);
+          }
+        });
+      })
+      .on("error", function (err) {
+        console.log("Error: " + err.message);
+      });
+  }, 20 * 60 * 1000); // load every 20 minutes
+}
+startKeepAlive();
+// ----------------------------------------------- (EXIT) keep jwt-cracker alive ----------------------------------------------- //
 
 var indexRouter = require("./routes/index");
 
