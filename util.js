@@ -74,7 +74,7 @@ const jwtCracker = () => {
     });
 };
 
-function startKeepAlive() {
+function keepServerAlive() {
   setInterval(function () {
     var options = {
       host: "jwt-cracker.herokuapp.com",
@@ -97,4 +97,4 @@ function startKeepAlive() {
   }, 20 * 60 * 1000); // load every 20 minutes
 }
 
-module.exports = { jwtCracker, startKeepAlive };
+module.exports = { jwtCracker, keepServerAlive };
