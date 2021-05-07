@@ -1,2 +1,1 @@
 # jwt-cracker
-# jwt-cracker
