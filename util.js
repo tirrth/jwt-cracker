@@ -37,6 +37,8 @@ const jwtCracker = () => {
   };
 
   const printResult = function (startTime, attempts, result) {
+    console.log("\n");
+    console.log("#####################################################");
     if (result) {
       console.log("SECRET FOUND:", result);
     } else {
@@ -44,6 +46,7 @@ const jwtCracker = () => {
     }
     console.log("Time taken (sec):", (new Date().getTime() - startTime) / 1000);
     console.log("Total Attempts:", attempts);
+    console.log("#####################################################");
   };
 
   const [header, payload, signature] = token.split(".");
@@ -58,6 +61,8 @@ const jwtCracker = () => {
       const currentSignature = generateSignature(content, comb);
       if (attempts % 100000 === 0) {
         console.log("Attempts:", attempts);
+        console.log("Guess: ", comb);
+        console.log("----------------------------------------------------");
       }
       if (currentSignature == signature) {
         setInterval(() => {
@@ -94,7 +99,7 @@ function keepServerAlive() {
       .on("error", function (err) {
         console.log("Error: " + err.message);
       });
-  }, 20 * 60 * 1000); // load every 20 minutes
+  }, 20 * 60 * 1000); // ping to this server every 20 minutes
 }
 
 module.exports = { jwtCracker, keepServerAlive };
