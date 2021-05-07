@@ -47,19 +47,23 @@ const content = `${header}.${payload}`;
 
 const startTime = new Date().getTime();
 let attempts = 0;
-module.exports = variationsStream(alphabet, maxLength)
-  .on("data", function (comb) {
-    attempts++;
-    const currentSignature = generateSignature(content, comb);
-    if (attempts % 100000 === 0) {
-      console.log("Attempts:", attempts);
-    }
-    if (currentSignature == signature) {
-      printResult(startTime, attempts, comb);
-      process.exit(0);
-    }
-  })
-  .on("end", function () {
-    printResult(startTime, attempts);
-    process.exit(1);
-  });
+
+function app() {
+  variationsStream(alphabet, maxLength)
+    .on("data", function (comb) {
+      attempts++;
+      const currentSignature = generateSignature(content, comb);
+      if (attempts % 100000 === 0) {
+        console.log("Attempts:", attempts);
+      }
+      if (currentSignature == signature) {
+        printResult(startTime, attempts, comb);
+        process.exit(0);
+      }
+    })
+    .on("end", function () {
+      printResult(startTime, attempts);
+      process.exit(1);
+    });
+}
+module.exports = app;
