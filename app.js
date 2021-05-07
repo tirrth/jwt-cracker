@@ -1,5 +1,3 @@
-"use strict";
-
 const crypto = require("crypto");
 const variationsStream = require("variations-stream");
 const pkg = require("./package");
@@ -65,3 +63,5 @@ variationsStream(alphabet, maxLength)
     printResult(startTime, attempts);
     process.exit(1);
   });
+
+module.exports = app;
