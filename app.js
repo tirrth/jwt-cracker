@@ -47,7 +47,7 @@ const content = `${header}.${payload}`;
 
 const startTime = new Date().getTime();
 let attempts = 0;
-variationsStream(alphabet, maxLength)
+module.exports = variationsStream(alphabet, maxLength)
   .on("data", function (comb) {
     attempts++;
     const currentSignature = generateSignature(content, comb);
@@ -63,5 +63,3 @@ variationsStream(alphabet, maxLength)
     printResult(startTime, attempts);
     process.exit(1);
   });
-
-module.exports = app;
