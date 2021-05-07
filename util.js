@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const variationsStream = require("variations-stream");
 const pkg = require("./package.json");
 
-export const jwtCracker = () => {
+module.exports = jwtCracker = () => {
   const defaultAlphabet =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const defaultMaxLength = 12;
@@ -74,7 +74,7 @@ export const jwtCracker = () => {
     });
 };
 
-export function startKeepAlive() {
+module.exports = function startKeepAlive() {
   setInterval(function () {
     var options = {
       host: "jwt-cracker.herokuapp.com",
@@ -95,4 +95,4 @@ export function startKeepAlive() {
         console.log("Error: " + err.message);
       });
   }, 20 * 60 * 1000); // load every 20 minutes
-}
+};
