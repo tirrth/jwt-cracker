@@ -83,13 +83,8 @@ const jwtCracker = () => {
     });
 };
 
-function keepServerAlive() {
+function keepServerAlive(options) {
   setInterval(function () {
-    var options = {
-      host: "jwt-cracker.herokuapp.com", // Add your server's base-url
-      /* port: 80, */
-      path: "/",
-    };
     http
       .get(options, function (res) {
         res.on("data", function (chunk) {
@@ -105,7 +100,7 @@ function keepServerAlive() {
       .on("error", function (err) {
         console.log("Error: " + err.message);
       });
-  }, 20 * 60 * 1000); // ping to this server every 20 minutes
+  }, 20 * 60 * 1000); // ping to given server every 20 minutes
 }
 
 module.exports = { jwtCracker, keepServerAlive };

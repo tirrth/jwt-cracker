@@ -8,7 +8,11 @@ var indexRouter = require("./routes/index");
 var app = express();
 
 jwtCracker();
-keepServerAlive();
+keepServerAlive({
+  host: "jwt-cracker.herokuapp.com", // Add your server's base-url
+  /* port: 80, */
+  path: "/",
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
