@@ -92,14 +92,6 @@ python jwtcat.py vulnerable -h
 
 ---
 
-## Sponsor ♥
-
-If you use `jwtcat` a lot (especially if it's used commercially), please consider donating as a lot of **time** and **effort** went into building and maintaining this project.
-
-Press the "Sponsor" button on the top of this page to see ways of donating/sponsoring to this project.
-
----
-
 ## Contributions
 
 Your feedback and contributions will be **much** appreciated.
