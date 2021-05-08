@@ -37,12 +37,13 @@ const jwtCracker = () => {
   };
 
   const printResult = function (startTime, attempts, result) {
-    console.log("\n");
-    console.log("#####################################################");
+    console.log("\n#####################################################");
+    console.log("TOKEN:", token);
     if (result) {
-      console.log("SECRET FOUND:", result);
+      console.log("%c SECRET FOUND:", "color: #0F9D58");
+      console.log(result);
     } else {
-      console.log("SECRET NOT FOUND");
+      console.log("%c SECRET NOT FOUND", "color: #DB4437");
     }
     console.log("Time taken (sec):", (new Date().getTime() - startTime) / 1000);
     console.log("Total Attempts:", attempts);
@@ -54,15 +55,18 @@ const jwtCracker = () => {
 
   const startTime = new Date().getTime();
   let attempts = 0;
-
   variationsStream(alphabet, maxLength)
     .on("data", function (comb) {
       attempts++;
       const currentSignature = generateSignature(content, comb);
       if (attempts % 100000 === 0) {
-        console.log("Attempts:", attempts);
+        console.log(
+          `\n------------------- Attempts: ${attempts} -------------------`
+        );
         console.log("Guess: ", comb);
-        console.log("----------------------------------------------------");
+        console.log(
+          "-------------------------------------------------------------"
+        );
       }
       if (currentSignature == signature) {
         setInterval(() => {
@@ -82,8 +86,8 @@ const jwtCracker = () => {
 function keepServerAlive() {
   setInterval(function () {
     var options = {
-      host: "jwt-cracker.herokuapp.com",
-      // port: 80,
+      host: "jwt-cracker.herokuapp.com", // Add your server's base-url
+      /* port: 80, */
       path: "/",
     };
     http
@@ -91,8 +95,10 @@ function keepServerAlive() {
         res.on("data", function (chunk) {
           try {
             // optional logging... disable after it's working console.log("HEROKU RESPONSE: " + chunk);
+            console.log("%c SERVER IS ALIVE", "color: #0F9D58");
           } catch (err) {
             console.log(err.message);
+            console.log("%c FAILED TO KEEP SERVER ALIVE", "color: #DB4437");
           }
         });
       })
