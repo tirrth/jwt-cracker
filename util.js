@@ -8,9 +8,10 @@ const jwtCracker = () => {
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const defaultMaxLength = 12;
   const defaultMinLength = 1;
-  const defaultToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o";
-  const token = process.env.TOKEN || defaultToken;
+  // const defaultToken =
+  // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o";
+  // const token = process.env.TOKEN || defaultToken;
+  const token = process.env.TOKEN;
   const alphabet = process.env.ALPHABET || defaultAlphabet;
   const maxLength = Number(process.env.MAX_LENGTH) || defaultMaxLength;
   const minLength = Number(process.env.MIN_LENGTH) || defaultMinLength;
@@ -25,7 +26,8 @@ const jwtCracker = () => {
     maxLength   the max length of the string generated during the brute force (default: ${defaultMaxLength})
     minLength   the min length of the string generated during the brute force (default: ${defaultMinLength})`
     );
-    process.exit(0);
+    // process.exit(0);
+    return;
   }
 
   const generateSignature = function (content, secret) {
