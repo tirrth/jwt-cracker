@@ -42,8 +42,7 @@ const jwtCracker = () => {
     console.log("\n#####################################################");
     console.log("TOKEN:", token);
     if (result) {
-      console.log("%c SECRET FOUND:", "color: #0F9D58");
-      console.log(result);
+      console.log(`%c SECRET FOUND: ${result}`, "color: #0F9D58");
     } else {
       console.log("%c SECRET NOT FOUND", "color: #DB4437");
     }
