@@ -9,7 +9,7 @@ const jwtCracker = () => {
   const defaultMaxLength = 12;
   const defaultMinLength = 1;
   const defaultToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o";
   const token = process.env.TOKEN || defaultToken;
   const alphabet = process.env.ALPHABET || defaultAlphabet;
   const maxLength = Number(process.env.MAX_LENGTH) || defaultMaxLength;
@@ -23,8 +23,7 @@ const jwtCracker = () => {
     token       the full HS256 jwt token to crack
     alphabet    the alphabet to use for the brute force (default: ${defaultAlphabet})
     maxLength   the max length of the string generated during the brute force (default: ${defaultMaxLength})
-    minLength   the min length of the string generated during the brute force (default: ${defaultMinLength})
-`
+    minLength   the min length of the string generated during the brute force (default: ${defaultMinLength})`
     );
     process.exit(0);
   }
@@ -58,6 +57,7 @@ const jwtCracker = () => {
 
   const startTime = new Date().getTime();
   let attempts = 0;
+  let is_secret_found = false;
   variationsStream(alphabet, { maxLength, minLength })
     .on("data", function (comb) {
       attempts++;
@@ -72,6 +72,7 @@ const jwtCracker = () => {
         );
       }
       if (currentSignature == signature) {
+        is_secret_found = true;
         setInterval(() => {
           printResult(startTime, attempts, comb);
         }, 2500);
@@ -79,9 +80,10 @@ const jwtCracker = () => {
       }
     })
     .on("end", function () {
-      setInterval(() => {
-        printResult(startTime, attempts);
-      }, 2500);
+      !is_secret_found &&
+        setInterval(() => {
+          printResult(startTime, attempts);
+        }, 2500);
       // process.exit(1);
     });
 };
