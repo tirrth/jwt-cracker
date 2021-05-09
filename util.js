@@ -40,14 +40,14 @@ const jwtCracker = () => {
       .replace(/\//g, "_");
   };
 
-  const printResult = function (startTime, attempts, result) {
+  const printResult = function (startTime, attempts, result, endTime) {
     console.log("\n#####################################################");
     if (result) {
       console.log(`%c SECRET FOUND: ${result}`, "color: #0F9D58");
     } else {
       console.log("%c SECRET NOT FOUND", "color: #DB4437");
     }
-    console.log("Time taken (sec):", (new Date().getTime() - startTime) / 1000);
+    console.log("Time taken (sec):", (endTime - startTime) / 1000);
     console.log("Total Attempts:", attempts);
     console.log("#####################################################");
   };
@@ -73,16 +73,18 @@ const jwtCracker = () => {
       }
       if (currentSignature == signature) {
         is_secret_found = true;
+        const endTime = new Date().getTime();
         setInterval(() => {
-          printResult(startTime, attempts, comb);
+          printResult(startTime, attempts, comb, endTime);
         }, 2500);
         // process.exit(0);
       }
     })
     .on("end", function () {
+      const endTime = new Date().getTime();
       !is_secret_found &&
         setInterval(() => {
-          printResult(startTime, attempts);
+          printResult(startTime, attempts, null, endTime);
         }, 2500);
       // process.exit(1);
     });
