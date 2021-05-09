@@ -1,8 +1,16 @@
 body {
-  padding: 50px;
+  width: 100vw;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#main {
+  padding: 50px;
+}
+
+p {
+  word-wrap: break-word;
+}
+
 a {
-  color: #00B7FF;
+  color: #00b7ff;
 }
