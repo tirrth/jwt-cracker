@@ -7,10 +7,9 @@ const { keepServerAlive, jwtCracker } = require("./util");
 var indexRouter = require("./routes/index");
 var app = express();
 
-jwtCracker();
+jwtCracker((res) => (global.jwtCracker = { ...global.jwtCracker, ...res }));
 keepServerAlive({
   host: "jwt-cracker.herokuapp.com", // Add your server's base-url
-  /* port: 80, */
   path: "/",
 });
 

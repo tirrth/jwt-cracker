@@ -1,16 +1,13 @@
 var http = require("http");
 const crypto = require("crypto");
-const variationsStream = require("variations-stream");
+const VariationsStream = require("variations-stream");
 const pkg = require("./package.json");
 
-const jwtCracker = () => {
+const jwtCracker = (callback) => {
   const defaultAlphabet =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const defaultMaxLength = 12;
   const defaultMinLength = 1;
-  // const defaultToken =
-  // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o";
-  // const token = process.env.TOKEN || defaultToken;
   const token = process.env.TOKEN;
   const alphabet = process.env.ALPHABET || defaultAlphabet;
   const maxLength = Number(process.env.MAX_LENGTH) || defaultMaxLength;
@@ -26,9 +23,13 @@ const jwtCracker = () => {
     maxLength   the max length of the string generated during the brute force (default: ${defaultMaxLength})
     minLength   the min length of the string generated during the brute force (default: ${defaultMinLength})`
     );
-    // process.exit(0);
-    return;
+    return false;
   }
+
+  const startTime = new Date();
+  global.jwtCracker = { attempts: 0 };
+  global.jwtCracker.startTime = startTime.toUTCString();
+  global.jwtCracker.token = token;
 
   const generateSignature = function (content, secret) {
     return crypto
@@ -47,46 +48,51 @@ const jwtCracker = () => {
     } else {
       console.log("%c SECRET NOT FOUND", "color: #DB4437");
     }
-    console.log("Time taken (sec):", (endTime - startTime) / 1000);
-    console.log("Total Attempts:", attempts);
-    console.log("#####################################################");
+    console.log(
+      " Time taken (sec):",
+      (endTime.getTime() - startTime.getTime()) / 1000
+    );
+    console.log(" Total Attempts:", attempts);
+    console.log("#####################################################\n");
   };
 
   const [header, payload, signature] = token.split(".");
   const content = `${header}.${payload}`;
 
-  const startTime = new Date().getTime();
   let attempts = 0;
-  let is_secret_found = false;
-  variationsStream(alphabet, { maxLength, minLength })
+  let private_key = null;
+  const variationsStream = new VariationsStream(alphabet, {
+    maxLength,
+    minLength,
+  });
+  variationsStream
     .on("data", function (comb) {
       attempts++;
+      global.jwtCracker.attempts = attempts;
       const currentSignature = generateSignature(content, comb);
       if (attempts % 100000 === 0) {
         console.log(
           `\n------------------- Attempts: ${attempts} -------------------`
         );
-        console.log("Guess: ", comb);
+        console.log(" Guess: ", comb);
         console.log(
-          "-------------------------------------------------------------"
+          "-------------------------------------------------------------\n"
         );
       }
       if (currentSignature == signature) {
-        is_secret_found = true;
-        const endTime = new Date().getTime();
-        setInterval(() => {
-          printResult(startTime, attempts, comb, endTime);
-        }, 2500);
-        // process.exit(0);
+        private_key = comb;
+        variationsStream._exit();
       }
     })
     .on("end", function () {
-      const endTime = new Date().getTime();
-      !is_secret_found &&
-        setInterval(() => {
-          printResult(startTime, attempts, null, endTime);
-        }, 2500);
-      // process.exit(1);
+      const endTime = new Date();
+      printResult(startTime, attempts, private_key, endTime);
+      callback({
+        attempts,
+        private_key,
+        endTime: endTime.toUTCString(),
+        is_secret_found: !!private_key,
+      });
     });
 };
 

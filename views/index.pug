@@ -2,4 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  h3 Welcome to #{title}
+  if !!jwtCracker.token
+    p TOKEN: #{jwtCracker.token}
+  if !!jwtCracker.startTime === true
+    p START TIME: #{jwtCracker.startTime}
+  if !!jwtCracker.attempts === true
+    p #{jwtCracker.is_secret_found === true ? "TOTAL" : ""} ATTEMPTS: #{jwtCracker.attempts}
+  if !!jwtCracker.private_key === true
+    p SECRET KEY: #{jwtCracker.private_key}
+  if jwtCracker.is_secret_found === false
+    p SECRET KEY NOT FOUND
+  if !!jwtCracker.endTime === true
+    p END TIME: #{jwtCracker.endTime}
