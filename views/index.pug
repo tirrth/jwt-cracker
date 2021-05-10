@@ -5,6 +5,12 @@ block content
   h3 Welcome to #{title}
   if !!jwtCracker.token
     p TOKEN: #{jwtCracker.token}
+  if !!global.alphabet === true
+    p ALPHABET: #{alphabet}
+  if !!global.minLength === true
+    p MIN_LENGTH: #{minLength}
+  if !!global.maxLength === true
+    p MAX_LENGTH: #{maxLength}
   p CURRENT TIME: #{currentTime}
   if !!jwtCracker.currentGuess === true
     p CURRENT GUESS: #{jwtCracker.currentGuess}

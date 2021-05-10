@@ -12,6 +12,9 @@ const jwtCracker = (callback) => {
   const alphabet = process.env.ALPHABET || defaultAlphabet;
   const maxLength = Number(process.env.MAX_LENGTH) || defaultMaxLength;
   const minLength = Number(process.env.MIN_LENGTH) || defaultMinLength;
+  global.alphabet = alphabet;
+  global.maxLength = maxLength;
+  global.minLength = minLength;
 
   if (typeof token === "undefined" || token === "--help") {
     console.log(
@@ -118,4 +121,4 @@ const jwtCracker = (callback) => {
 //   }, 20 * 60 * 1000); // ping to given server every 20 minutes
 // }
 
-module.exports = { jwtCracker, keepServerAlive };
+module.exports = { jwtCracker /* , keepServerAlive */ };
