@@ -68,10 +68,10 @@ const jwtCracker = (callback) => {
   variationsStream
     .on("data", function (comb) {
       attempts++;
-      global.jwtCracker.attempts = attempts;
-      global.jwtCracker.currentGuess = comb;
       const currentSignature = generateSignature(content, comb);
       if (attempts % 100000 === 0) {
+        global.jwtCracker.attempts = attempts;
+        global.jwtCracker.currentGuess = comb;
         console.log(
           `\n------------------- Attempts: ${attempts} -------------------`
         );
@@ -88,34 +88,34 @@ const jwtCracker = (callback) => {
     .on("end", function () {
       const endTime = new Date();
       printResult(startTime, attempts, private_key, endTime);
-      global.jwtCracker.currentGuess = null;
       callback({
         attempts,
         private_key,
         endTime: endTime.toUTCString(),
         is_secret_found: !!private_key,
+        currentGuess: null,
       });
     });
 };
 
-function keepServerAlive(options) {
-  setInterval(function () {
-    http
-      .get(options, function (res) {
-        res.on("data", function (chunk) {
-          try {
-            // optional logging... disable after it's working console.log("HEROKU RESPONSE: " + chunk);
-            console.log("%c SERVER IS ALIVE", "color: #0F9D58");
-          } catch (err) {
-            console.log(err.message);
-            console.log("%c FAILED TO KEEP SERVER ALIVE", "color: #DB4437");
-          }
-        });
-      })
-      .on("error", function (err) {
-        console.log("Error: " + err.message);
-      });
-  }, 20 * 60 * 1000); // ping to given server every 20 minutes
-}
+// function keepServerAlive(options) {
+//   setInterval(function () {
+//     http
+//       .get(options, function (res) {
+//         res.on("data", function (chunk) {
+//           try {
+//             // optional logging... disable after it's working console.log("HEROKU RESPONSE: " + chunk);
+//             console.log("%c SERVER IS ALIVE", "color: #0F9D58");
+//           } catch (err) {
+//             console.log(err.message);
+//             console.log("%c FAILED TO KEEP SERVER ALIVE", "color: #DB4437");
+//           }
+//         });
+//       })
+//       .on("error", function (err) {
+//         console.log("Error: " + err.message);
+//       });
+//   }, 20 * 60 * 1000); // ping to given server every 20 minutes
+// }
 
 module.exports = { jwtCracker, keepServerAlive };
