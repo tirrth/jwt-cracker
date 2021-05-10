@@ -5,6 +5,9 @@ block content
   h3 Welcome to #{title}
   if !!jwtCracker.token
     p TOKEN: #{jwtCracker.token}
+  p CURRENT TIME: #{currentTime}
+  if !!jwtCracker.currentGuess === true
+    p CURRENT GUESS: #{jwtCracker.currentGuess}
   if !!jwtCracker.startTime === true
     p START TIME: #{jwtCracker.startTime}
   if !!jwtCracker.attempts === true

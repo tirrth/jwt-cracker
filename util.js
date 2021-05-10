@@ -69,6 +69,7 @@ const jwtCracker = (callback) => {
     .on("data", function (comb) {
       attempts++;
       global.jwtCracker.attempts = attempts;
+      global.jwtCracker.currentGuess = comb;
       const currentSignature = generateSignature(content, comb);
       if (attempts % 100000 === 0) {
         console.log(
@@ -87,6 +88,7 @@ const jwtCracker = (callback) => {
     .on("end", function () {
       const endTime = new Date();
       printResult(startTime, attempts, private_key, endTime);
+      global.jwtCracker.currentGuess = null;
       callback({
         attempts,
         private_key,
